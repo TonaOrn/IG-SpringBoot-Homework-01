@@ -1,14 +1,19 @@
 package com.ig.training.controllers;
 
+import com.ig.training.aop.AuditFilter;
 import com.ig.training.base.response.ObjectResponse;
 import com.ig.training.base.response.PageResponse;
 import com.ig.training.base.response.ResponseMessage;
 import com.ig.training.dto.AccountDto;
 import com.ig.training.model.Account;
 import com.ig.training.services.AccountService;
+import com.ig.training.utilities.constants.Constant;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/v1/api/account")
@@ -31,6 +36,7 @@ public class AccountController {
         return new ObjectResponse<>(accountService.getAccountDetail(id).toAccountDto());
     }
 
+    @AuditFilter()
     @GetMapping("/list")
     public PageResponse<AccountDto> getAccountListPage(
             @RequestParam(required = false) String query,
