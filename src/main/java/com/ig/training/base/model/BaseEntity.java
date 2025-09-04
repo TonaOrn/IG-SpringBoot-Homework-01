@@ -1,9 +1,6 @@
 package com.ig.training.base.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,11 +12,10 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class BaseEntity {
     @Column(columnDefinition = "boolean default true")
-    private Boolean status;
+    private Boolean status = true;
     @Column(name = "version")
     @Version
     private int version;
@@ -27,4 +23,14 @@ public class BaseEntity {
     private Date createdDate;
     @LastModifiedDate
     private Date updatedDate;
+
+    @PrePersist
+    public void onInsert() {
+        this.createdDate = new Date();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedDate = new Date();
+    }
 }

@@ -1,11 +1,13 @@
 package com.ig.training.base.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.Setter;
 
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ObjectResponse<T> {
@@ -14,5 +16,6 @@ public class ObjectResponse<T> {
 
     public ObjectResponse(T results) {
         this.results = results;
+        this.response = new ResponseMessage().success();
     }
 }
