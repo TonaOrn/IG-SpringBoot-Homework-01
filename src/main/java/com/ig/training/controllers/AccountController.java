@@ -10,17 +10,17 @@ import com.ig.training.services.AccountService;
 import com.ig.training.utilities.constants.Constant;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/v1/api/account")
+@RequestMapping(Constant.MAIN_PATH + "/account")
 @AllArgsConstructor
 public class AccountController {
     private final AccountService accountService;
 
+    @PreAuthorize("hasAuthority('Accountance')")
     @PostMapping
     public ObjectResponse<Account> getAccount(@Valid @RequestBody AccountDto accountDto) {
         return new ObjectResponse<>(accountService.createAccount(accountDto.toAccount()));
@@ -37,8 +37,7 @@ public class AccountController {
     }
 
     @AuditFilter()
-    @GetMapping("/list")
-    public PageResponse<AccountDto> getAccountListPage(
+    @GetMapping("/list") PageResponse<AccountDto> getAccountListPage(
             @RequestParam(required = false) String query,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
